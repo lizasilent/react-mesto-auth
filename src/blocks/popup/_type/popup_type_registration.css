@@ -1,0 +1,15 @@
+.popup_type_registration .popup__form {
+    align-items: center;
+    text-align: center;
+    position: relative;
+    max-width: 430px;
+    max-height: 330px;
+    padding: 60px 36px;
+
+}
+
+.popup_type_registration .popup__header {
+    margin-top: 32px;
+    margin-bottom:0px;
+
+}
