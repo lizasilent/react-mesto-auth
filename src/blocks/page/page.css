@@ -1,0 +1,8 @@
+@import url(../page/__content/page__content.css);
+
+.page {
+  min-width: 320px;
+  background-color: #000000;
+  color: white;
+  font-family: Inter, Arial, sans-serif;
+}

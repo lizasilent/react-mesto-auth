@@ -1,0 +1,32 @@
+
+@import url(./__form/popup__form.css);
+@import url(./__close-btn/popup__close-btn.css);
+@import url(./__header/popup__header.css);
+@import url(./__input/popup__input.css);
+@import url(./__submit-btn/popup__submit-btn.css);
+@import url(./__submit-btn/_disabled/popup__submit-btn_disabled.css);
+@import url(./__image/popup__image.css);
+@import url(./__title/popup__title.css);
+@import url(./__error/popup__error.css);
+@import url(./__error/_is-active/popup__error_is-active.css);
+@import url(./_type/popup_type_grid-img.css);
+
+
+.popup {
+  background-color: rgba(0,0,0,0.5);
+  width:100%;
+  min-height: 100%;
+  overflow:hidden;
+  position:fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility .5s, opacity .5s linear;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+

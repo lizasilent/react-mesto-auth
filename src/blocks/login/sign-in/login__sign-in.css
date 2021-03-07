@@ -1,0 +1,16 @@
+.login__sign-in {
+        color: white;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16.94px;
+        text-align: right;
+        margin-top:15px;
+        text-decoration: none;
+        text-align: center;
+    }
+     
+.header__login:hover {
+          cursor: pointer;
+       };
+

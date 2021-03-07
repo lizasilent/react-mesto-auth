@@ -1,0 +1,32 @@
+@import url(../login/header/login__header.css);
+@import url(../login/button/login__button.css);
+@import url(../login/input/login__input.css);
+@import url(../login/sign-in/login__sign-in.css);
+
+.login__form {
+
+        position:relative;
+        background-color:black;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 36px 112px;
+        margin:0 auto;
+        max-width: 358px;
+        border-radius: 10px;
+        
+      }
+      
+      .login__form :nth-last-child(2) {
+        margin-bottom:0;
+      }
+      
+      @media screen and (max-width: 523px) {
+      
+        .login__form {
+          min-width: 282px;
+          padding: 20px 30px 20px;
+          box-sizing: border-box;
+        }
+      }

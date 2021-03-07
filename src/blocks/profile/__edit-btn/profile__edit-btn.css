@@ -1,0 +1,24 @@
+.profile__edit-btn {
+  border: 1px solid white;
+  background-color: black;
+  background-image: url(../../../images/pencil_logo.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 24px;
+  min-height: 24px;
+  cursor: pointer;
+  align-self: center;
+  padding:0;
+}
+
+.profile__edit-btn:hover {
+  opacity:0.8;
+}
+
+
+@media screen and (max-width: 523px) {
+  .profile__edit-btn {
+    min-width: 18px;
+    min-height: 18px;
+  }
+}

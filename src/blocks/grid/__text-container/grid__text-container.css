@@ -1,0 +1,11 @@
+.grid__text-container {
+  position: relative;
+  color: black;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 21px;
+  margin-top: -5px;
+}

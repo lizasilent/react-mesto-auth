@@ -1,0 +1,17 @@
+@import url(./_name/popup__text_name.css);
+@import url(./_description/popup__text_description.css);
+@import url(./_invalid/popup__input_invalid.css);
+
+.popup__input {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid gray;
+  background-color: transparent;
+  font-weight: normal;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+  min-height: 27px;
+  margin-bottom: 29px;
+}
+

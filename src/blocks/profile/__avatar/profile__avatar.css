@@ -1,0 +1,54 @@
+.profile__avatar {
+  position: relative;
+  background-image: url("../../../images/gudetama.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.profile__avatar::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  content: '';
+  transition: 0.2s;
+  background: rgba(0, 0, 0, 0);
+  
+}
+
+.profile__avatar::after {
+  position: absolute;
+  content: '';
+  transition: 0.2s;
+  background: url("../../../images/pencil_logo_big.png");
+  background-size: contain;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.profile__avatar:hover::before {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.profile__avatar:hover::after {
+  opacity: 0.8;
+}
+
+
+@media screen and (max-width: 523px) {
+  .profile__avatar {
+    min-width: 100px;
+    min-height: 100px;
+    margin: 0;
+    margin-bottom: 14px;
+  }
+}

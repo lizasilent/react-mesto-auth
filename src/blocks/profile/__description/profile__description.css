@@ -1,0 +1,16 @@
+.profile__description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 1.2;
+  margin:0;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 523px) {
+  .profile__description {
+    font-weight: normal;
+    font-size: 14px;
+
+  }
+}

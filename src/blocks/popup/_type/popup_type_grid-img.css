@@ -1,0 +1,33 @@
+.popup_type_grid-img .popup__form {
+    position:relative;
+    max-width: 75vw;
+   max-height: 75vh;
+    background: none;
+    padding: 0;
+}
+
+.popup_type_grid-img .popup__close-btn {
+    position:absolute;
+    top:-55px;
+    right: -40px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 523px) {
+    .popup_type_grid-img .popup__close-btn {
+        position:absolute;
+        top:-50px;
+        right: -40px;
+        min-height: 30px;
+        min-width: 30px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .popup_type_grid-img .popup__close-btn {
+        position:absolute;
+        top:-40px;
+        right: -25px;
+        
+    }
+}

@@ -1,0 +1,25 @@
+.popup__form {
+  position:relative;
+  background-color: white;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 34px 36px 36px;
+  margin:0 auto;
+  min-width: 430px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.popup__form :nth-last-child(2) {
+  margin-bottom:0;
+}
+
+@media screen and (max-width: 523px) {
+
+  .popup__form  {
+    min-width: 282px;
+    padding: 20px 30px 20px;
+    box-sizing: border-box;
+  }
+}

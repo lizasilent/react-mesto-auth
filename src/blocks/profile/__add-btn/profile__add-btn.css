@@ -1,0 +1,38 @@
+.profile__add-btn {
+  border: 1px solid white;
+  background-color: black;
+  background-image: url(../../../images/plus_logo.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  border-radius: 2px;
+  color: white;
+  min-width: 150px;
+  min-height: 50px;
+  cursor: pointer;
+  padding: 0;
+} 
+
+.profile__add-btn:hover{
+opacity: 0.8;
+}
+
+@media screen and (max-width: 770px) {
+  .profile__add-btn {
+    margin-top: 36px;
+    min-width: 80%;
+    min-height: 50px;
+    cursor: pointer;
+  }
+}
+
+
+@media screen and (max-width: 523px) {
+  .profile__add-btn {
+    margin-top: 36px;
+    min-width: 100%;
+    min-height: 50px;
+    cursor: pointer;
+  }
+}
+
