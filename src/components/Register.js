@@ -1,14 +1,37 @@
 import React from 'react';
 import Header from "./Header"
 import InfoTooltip from './InfoTooltip';
-import Footer from "./Footer"
+import Footer from "./Footer";
+import { Link } from 'react-router-dom';
+import * as auth from '../utils/api2.js';
 
 
-function Register() {
+const Register = ({ handleRegister }) => {
 
+    const [data, setData] = React.useState({
+      email: '',
+      password: '',
+    });
     const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
 
-    function handleRegisterSubmit() {
+    // const history = useHistory();
+
+    const handleChange = (e) => {
+      const {name, value} = e.target;
+
+      setData({
+        ...data,
+        [name]: value 
+      });
+    }
+
+     
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const {email, password} = data;
+     
+
+      handleRegister(email, password);
         setIsRegisterPopupOpen(true);
       }
 
@@ -22,13 +45,15 @@ function Register() {
         <Header />
         <main className="content">
         <div>
-            <form className="login__form" type="submit">
+            <form className="login__form" type="submit" onSubmit={handleSubmit}>
               <p className="login__header">Регистрация</p>
-              <input className="login__input" placeholder="Email" type="email" required />
-              <input className="login__input" placeholder="Пароль" type="password" required />
+              <input name="email" className="login__input" placeholder="Email" type="email" value={data.email} onChange={handleChange} required />
+              <input name="password" className="login__input" placeholder="Пароль" type="password" value={data.password} onChange={handleChange} required />
                 <span className="popup__error popup__error_is-active" id="image-src-error" />
-              <button type="submit" className="login__button" onClick={handleRegisterSubmit}>Зарегистрироваться</button>
-              <div className="login__sign-in">Уже зарегистрированы? <a href="#" className="login__sign-in">Войти</a></div>
+              <button type="submit" className="login__button">Зарегистрироваться</button>
+              <div className="login__sign-in">Уже зарегистрированы? 
+              <Link to="/sign-in" className="login__sign-in"> Войти </Link>
+      </div>
             </form>
           </div>
           

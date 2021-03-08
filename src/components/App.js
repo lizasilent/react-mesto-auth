@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -7,9 +8,10 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-// import InfoTooltip from "./InfoTooltip";
-// import ProtectedRoute from "./ProtectedRoute";
+import * as auth from '../utils/api2.js';
 import api from "../utils/api";
+import Register from "./Register";
+import Login from "./Login";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -21,6 +23,54 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+ 
+  useEffect(() => { 
+    tokenCheck();
+  }, [])
+
+    const handleLogin = (email, password) => {
+      auth.authorize(email, password)
+      .then((data) => {
+  
+          if (data.statusCode !== 400) {
+            throw new Error("Что-то пошло не так")
+        }
+      if(data.jwt) {
+        localStorage.setItem("jwt", data.jwt)
+      }
+    }).catch((err) => console.log(err))
+    }
+
+    const history = useHistory();
+
+    const handleRegister = (email, password) => {
+      auth.register(email, password)
+      .then((res) => {
+        if (res.statusCode !== 400) {
+        history.push("/sign-up")
+      }
+      else {
+      throw new Error("Что-то пошло не так")
+      }
+    }).catch((err) => console.log(err))
+    }
+
+    const tokenCheck = () => {
+      const jwt = localStorage.getItem("jwt");
+
+      if (jwt){
+        auth.getContent(jwt).then((res) => {
+          if (res) {
+            const userData = {
+              email: res.email,
+              password: res.password
+            }         
+          }
+        })
+      }
+    }
 
   // Стейт, отвечающий за данные текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({ name: 'Gudetama', about: "lazylazy", avatar: "https://i.pinimg.com/originals/37/04/ef/3704efd795fcee0461946434db3c92c2.jpg" });
@@ -100,7 +150,7 @@ function App() {
       })
     }
 
-
+   
     function handleCardLike(card) {
       const isLiked = card.likes.some(i => i._id === currentUser._id);
       api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
@@ -142,9 +192,7 @@ function App() {
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
               <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
-{/* 
-              <ProtectedRoute/>  */}
-               
+          
           </div>
         </div>
       </CurrentUserContext.Provider>

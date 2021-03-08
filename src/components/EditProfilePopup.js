@@ -31,6 +31,7 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
           about: description,
         });
       } 
+
       
 
     return (
