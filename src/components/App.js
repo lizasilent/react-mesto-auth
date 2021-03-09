@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -12,6 +12,7 @@ import * as auth from '../utils/api2.js';
 import api from "../utils/api";
 import Register from "./Register";
 import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -174,8 +175,10 @@ function App() {
       return (
         
       <CurrentUserContext.Provider value={currentUser}>
-      
-        <div className="page">
+      <Switch>
+      <ProtectedRoute path exact="/" loggedIn={loggedIn}>
+   
+      <div className="page">
           <div className="page__content">
 
               <Header />
@@ -195,9 +198,22 @@ function App() {
           
           </div>
         </div>
+      </ProtectedRoute>
+
+      <Route path="/sign-in">
+        <Login />
+      </Route>
+      <Route path="/sign-up">
+        <Register />
+      </Route>
+      <Route>
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
+        </Route>
+       </Switch>
       </CurrentUserContext.Provider>
   );
 
+ 
   
 };
   
