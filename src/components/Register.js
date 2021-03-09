@@ -3,7 +3,6 @@ import Header from "./Header"
 import InfoTooltip from './InfoTooltip';
 import Footer from "./Footer";
 import { Link } from 'react-router-dom';
-import * as auth from '../utils/api2.js';
 
 
 const Register = ({ handleRegister }) => {

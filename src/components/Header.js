@@ -1,5 +1,6 @@
 import React from 'react';
 import mainLogo from "../images/mesto_logo.svg"
+import { Link } from 'react-router-dom';
 
 function Header() {
 return (
@@ -8,7 +9,7 @@ return (
             <img alt='Logo' src={mainLogo}/>
             </div>
             <div>
-              <a className="header__login" href="#">Войти</a>
+            <Link to="/sign-in" className="header__login"> Войти </Link>
             </div>
 
     </header>

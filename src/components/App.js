@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useHistory, Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -25,53 +25,74 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [userData, setUserData] = React.useState({
+    email: "",
+    password: ""
+  });
 
- 
-  useEffect(() => { 
-    tokenCheck();
-  }, [])
+  const history = useHistory();
+
+  
+  const tokenCheck = useCallback(() => {
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt){
+      auth.getContent(jwt).then((res) => {
+        if (res) {
+          setUserData({
+            ...userData,
+            email: res.email,
+            password: res.password
+          })    
+          setLoggedIn(true);     
+        }
+
+        else setLoggedIn(false);
+      })
+    }
+  }, [userData]);
+
+
+  useEffect(() => {
+  if (loggedIn){
+    history.push("/");
+  }}, [loggedIn, history])
+
 
     const handleLogin = (email, password) => {
       auth.authorize(email, password)
       .then((data) => {
   
-          if (data.statusCode !== 400) {
-            throw new Error("Что-то пошло не так")
-        }
-      if(data.jwt) {
+      if (data.jwt) {
         localStorage.setItem("jwt", data.jwt)
+        setLoggedIn(true);
+
+        setUserData({
+          ...userData,
+          email: data.user.email,
+          password: data.user.password
+        })    
       }
+        else {
+          throw new Error("Введены неверные данные")}
     }).catch((err) => console.log(err))
     }
 
-    const history = useHistory();
-
+   
     const handleRegister = (email, password) => {
       auth.register(email, password)
       .then((res) => {
-        if (res.statusCode !== 400) {
-        history.push("/sign-up")
+        if (!res) {
+          throw new Error("Что-то пошло не так")
       }
-      else {
-      throw new Error("Что-то пошло не так")
-      }
+      history.push("/sign-in")
+      return res;
     }).catch((err) => console.log(err))
     }
 
-    const tokenCheck = () => {
-      const jwt = localStorage.getItem("jwt");
-
-      if (jwt){
-        auth.getContent(jwt).then((res) => {
-          if (res) {
-            const userData = {
-              email: res.email,
-              password: res.password
-            }         
-          }
-        })
-      }
-    }
+    useEffect(() => { 
+      tokenCheck();
+    }, [tokenCheck]);
 
   // Стейт, отвечающий за данные текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({ name: 'Gudetama', about: "lazylazy", avatar: "https://i.pinimg.com/originals/37/04/ef/3704efd795fcee0461946434db3c92c2.jpg" });
@@ -201,10 +222,10 @@ function App() {
       </ProtectedRoute>
 
       <Route path="/sign-in">
-        <Login />
+        <Login handleLogin={handleLogin} />
       </Route>
       <Route path="/sign-up">
-        <Register />
+        <Register handleRegister={handleRegister}/>
       </Route>
       <Route>
           {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
