@@ -196,13 +196,11 @@ function App() {
       return (
         
       <CurrentUserContext.Provider value={currentUser}>
-      <Switch>
-      <ProtectedRoute path exact="/" loggedIn={loggedIn}>
-   
       <div className="page">
           <div className="page__content">
-
               <Header />
+              <Switch>
+              <ProtectedRoute exact path="/" loggedIn={loggedIn}>
               <Main onEditProfile={handleEditProfileClick} 
                     onAddPlace={handleAddPlaceClick}
                     onEditAvatar={handleEditAvatarClick}
@@ -216,10 +214,10 @@ function App() {
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
               <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
-          
+              </ProtectedRoute>
+              </Switch>
           </div>
         </div>
-      </ProtectedRoute>
 
       <Route path="/sign-in">
         <Login handleLogin={handleLogin} />
@@ -227,10 +225,9 @@ function App() {
       <Route path="/sign-up">
         <Register handleRegister={handleRegister}/>
       </Route>
-      <Route>
-          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
-        </Route>
-       </Switch>
+      <Route path="/">
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+          </Route>
       </CurrentUserContext.Provider>
   );
 

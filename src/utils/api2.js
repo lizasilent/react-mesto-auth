@@ -9,12 +9,13 @@ export const register = (email, password) => {
     body: JSON.stringify({email, password}),
   })
   .then((response) => { 
+    console.log(response)
     return response.json(); }
   )};
 
 
 export const authorize = (identifier, password) => {
-  return fetch(`${BASE_URL}/sign-in`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

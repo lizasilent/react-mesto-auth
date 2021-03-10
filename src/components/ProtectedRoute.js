@@ -1,13 +1,18 @@
 import React from 'react';
+import Footer from './Footer';
 import { Route, Redirect } from "react-router-dom";
- 
-const ProtectedRoute = ({ loggedIn, component: Component, ...props }) => {
+
+const ProtectedRoute = ({ component: Component, ...props  }) => {
+
   return (
     <Route>
-      {
-        loggedIn ? <Component {...props} /> : <Redirect to="./Login" />
-      }
+      <>
+        { 
+          props.loggedIn ? <Component {...props} /> : <Redirect to="/sign-in" />
+        }
+        <Footer />
+      </>
     </Route>
 )}
- 
-export default ProtectedRoute;
+
+export default ProtectedRoute; 
