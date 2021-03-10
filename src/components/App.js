@@ -16,7 +16,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
-
 function App() {
 
   //Открытие попапов 
@@ -29,35 +28,20 @@ function App() {
     email: "",
     password: ""
   });
-
   const history = useHistory();
 
   
-  const tokenCheck = useCallback(() => {
-    const jwt = localStorage.getItem("jwt");
-
-    if (jwt){
-      auth.getContent(jwt).then((res) => {
-        if (res) {
-          setUserData({
-            ...userData,
-            email: res.email,
-            password: res.password
-          })    
-          setLoggedIn(true);     
-        }
-
-        else setLoggedIn(false);
-      })
+  React.useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth.getContent(jwt)
+        .then(() => {
+          setLoggedIn(true);
+          history.push('/');
+        })
+        .catch(err => console.log(err));
     }
-  }, [userData]);
-
-
-  useEffect(() => {
-  if (loggedIn){
-    history.push("/");
-  }}, [loggedIn, history])
-
+  }, [history]);
 
     const handleLogin = (email, password) => {
       auth.authorize(email, password)
@@ -66,7 +50,6 @@ function App() {
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt)
         setLoggedIn(true);
-
         setUserData({
           ...userData,
           email: data.user.email,
@@ -82,17 +65,19 @@ function App() {
     const handleRegister = (email, password) => {
       auth.register(email, password)
       .then((res) => {
-        if (!res) {
-          throw new Error("Что-то пошло не так")
+        if (res.status === 201 || res.status === 200) {
+          //тут открытие попара
+          history.push("/sign-in");
+          console.log(email, password);
       }
-      history.push("/sign-in")
-      return res;
+
+      if (res.status === 400) {
+        console.log("Такой email уже существует")
+      }
+      
     }).catch((err) => console.log(err))
     }
 
-    useEffect(() => { 
-      tokenCheck();
-    }, [tokenCheck]);
 
   // Стейт, отвечающий за данные текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({ name: 'Gudetama', about: "lazylazy", avatar: "https://i.pinimg.com/originals/37/04/ef/3704efd795fcee0461946434db3c92c2.jpg" });
@@ -198,28 +183,19 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
           <div className="page__content">
-              <Header />
+              <Header loggedIn={loggedIn}/>
               <Switch>
-              <ProtectedRoute exact path="/" loggedIn={loggedIn}>
-              <Main onEditProfile={handleEditProfileClick} 
+              {<ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
+                    onEditProfile={handleEditProfileClick} 
                     onAddPlace={handleAddPlaceClick}
                     onEditAvatar={handleEditAvatarClick}
                     onCardClick={handleCardClick}
                     cards={cards}
                     onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}/>
-              <Footer />
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-              <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
-              <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
-              <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
-              </ProtectedRoute>
-              </Switch>
-          </div>
-        </div>
+                    onCardDelete={handleCardDelete}
+                     />}
 
-      <Route path="/sign-in">
+<Route path="/sign-in">
         <Login handleLogin={handleLogin} />
       </Route>
       <Route path="/sign-up">
@@ -228,6 +204,16 @@ function App() {
       <Route path="/">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
+          </Switch>
+              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+              <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+              <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+              <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
+ 
+          </div>
+        </div>
+
       </CurrentUserContext.Provider>
   );
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from "./Header"
 import Footer from "./Footer"
 
 
@@ -32,7 +31,6 @@ function Login({ handleLogin }) {
       return (
           <div className="page">
           <div className="page__content">
-          <Header />
           <main className="content">
           <div>
               <form className="login__form" onSubmit={handleSubmit}>

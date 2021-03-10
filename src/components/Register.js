@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from "./Header"
 import InfoTooltip from './InfoTooltip';
 import Footer from "./Footer";
 import { Link } from 'react-router-dom';
@@ -12,8 +11,6 @@ const Register = ({ handleRegister }) => {
       password: '',
     });
     const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
-
-    // const history = useHistory();
 
     const handleChange = (e) => {
       const {name, value} = e.target;
@@ -41,7 +38,6 @@ const Register = ({ handleRegister }) => {
     return (
         <div className="page">
         <div className="page__content">
-        <Header />
         <main className="content">
         <div>
             <form className="login__form" type="submit" onSubmit={handleSubmit}>

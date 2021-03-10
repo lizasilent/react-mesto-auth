@@ -1,19 +1,31 @@
 import React from 'react';
 import mainLogo from "../images/mesto_logo.svg"
-import { Link } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 
-function Header() {
+
+function Header({loggedIn}) {
+
+    const { pathname } = useLocation();
+    const text = `${pathname === '/sign-in' ? 'Регистрация' : 'Войти'}`;
+    const linkRoute = `${pathname === '/sign-in' ? '/sign-up' : '/sign-in'}`;
+
 return (
     <header className="header">
             <div className="header__logo">
             <img alt='Logo' src={mainLogo}/>
             </div>
-            <div>
-            <Link to="/sign-in" className="header__login"> Войти </Link>
-            </div>
-
+        <div>
+        
+        {loggedIn ? (
+          <>
+            <p>email</p>
+            <p>залогинен</p>
+          </>) : (<Link to={linkRoute} className="header__login">{text}</Link> )
+        }
+        </div>
     </header>
 )
+
 }
 
 export default Header;
