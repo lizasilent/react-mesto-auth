@@ -1,39 +1,28 @@
 import React from 'react';
-import InfoTooltip from './InfoTooltip';
 import Footer from "./Footer";
 import { Link } from 'react-router-dom';
 
 
 const Register = ({ handleRegister }) => {
 
-    const [data, setData] = React.useState({
-      email: '',
-      password: '',
-    });
-    const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
+  const [valueEmail, setValueEmail] = React.useState('');
+  const [valuePassword, setValuePassword] = React.useState('');
 
-    const handleChange = (e) => {
-      const {name, value} = e.target;
+  function handleChangeEmail(e) {
+    setValueEmail(e.target.value);
+  }
 
-      setData({
-        ...data,
-        [name]: value 
-      });
-    }
+  function handleChangePassword(e) {
+    setValuePassword(e.target.value);
+  }
 
-     
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const {email, password} = data;
-     
+  function handleSubmit(e){
+    e.preventDefault()
+    const email = valueEmail;
+    const password = valuePassword;
+    handleRegister(email, password)
+  } 
 
-      handleRegister(email, password);
-        setIsRegisterPopupOpen(true);
-      }
-
-      function closeRegisterPopup() {
-        setIsRegisterPopupOpen(false);
-      }
 
     return (
         <div className="page">
@@ -42,8 +31,8 @@ const Register = ({ handleRegister }) => {
         <div>
             <form className="login__form" type="submit" onSubmit={handleSubmit}>
               <p className="login__header">Регистрация</p>
-              <input name="email" className="login__input" placeholder="Email" type="email" value={data.email} onChange={handleChange} required />
-              <input name="password" className="login__input" placeholder="Пароль" type="password" value={data.password} onChange={handleChange} required />
+              <input name="email" className="login__input" placeholder="Email" type="email" onChange={handleChangeEmail} required />
+              <input name="password" className="login__input" placeholder="Пароль" type="password"  onChange={handleChangePassword} required />
                 <span className="popup__error popup__error_is-active" id="image-src-error" />
               <button type="submit" className="login__button">Зарегистрироваться</button>
               <div className="login__sign-in">Уже зарегистрированы? 
@@ -54,7 +43,6 @@ const Register = ({ handleRegister }) => {
           
       </main>
       <Footer />
-      <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeRegisterPopup} />
       </div>
       </div>
       

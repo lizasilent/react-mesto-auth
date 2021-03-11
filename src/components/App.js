@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { useHistory, Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
-import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
@@ -12,6 +11,7 @@ import * as auth from '../utils/api2.js';
 import api from "../utils/api";
 import Register from "./Register";
 import Login from "./Login";
+import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from "./ProtectedRoute";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -24,12 +24,9 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userData, setUserData] = React.useState({
-    email: "",
-    password: ""
-  });
   const history = useHistory();
-
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
+  
   
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -43,30 +40,33 @@ function App() {
     }
   }, [history]);
 
+
     const handleLogin = (email, password) => {
       auth.authorize(email, password)
-      .then((data) => {
-  
-      if (data.jwt) {
-        localStorage.setItem("jwt", data.jwt)
-        setLoggedIn(true);
-        setUserData({
-          ...userData,
-          email: data.user.email,
-          password: data.user.password
-        })    
+    .then((data) => {
+      if (!data) {
+        throw new Error('Произошла ошибка');
       }
-        else {
-          throw new Error("Введены неверные данные")}
-    }).catch((err) => console.log(err))
-    }
+      auth.getContent(data)
+        .then((res) => {
+          console.log(res)
+        }).catch(err => console.log(err));
+        setLoggedIn(true);
 
+        // api.getUserInfo().then((user) => setCurrentUser(user.data))
+        // .catch(error => console.log(error));
+        
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+    
    
     const handleRegister = (email, password) => {
       auth.register(email, password)
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
-          //тут открытие попара
+          setIsRegisterPopupOpen(true);
           history.push("/sign-in");
           console.log(email, password);
       }
@@ -107,12 +107,17 @@ function App() {
         setSelectedCard(card);
       }
 
+
+     
+
+
      // Закрытие попапов
      function closeAllPopups() {
       setIsEditPopupOpen(false);
       setIsAddPlacePopupOpen(false);
       setIsEditAvatarPopupOpen(false);
       setSelectedCard(false);
+      setIsRegisterPopupOpen(false);
     }
 
 
@@ -216,9 +221,6 @@ function App() {
 
       </CurrentUserContext.Provider>
   );
-
- 
-  
 };
   
 

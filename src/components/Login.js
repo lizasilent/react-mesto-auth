@@ -4,28 +4,25 @@ import Footer from "./Footer"
 
 function Login({ handleLogin }) {
   
-    const [data, setData] = React.useState({
-      email: '',
-      password: '',
-    });
+  const [valueEmail, setValueEmail] = React.useState('');
+  const [valuePassword, setValuePassword] = React.useState('');
 
-    const handleChange = (e) => {
-      const {name, value} = e.target;
+  function handleChangeEmail(e) {
+    setValueEmail(e.target.value);
+  }
 
-      setData({
-        ...data,
-        [name]: value 
-      });
-    }
-    
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (!data.email || !data.password) {
-        return
-      }
+  function handleChangePassword(e) {
+    setValuePassword(e.target.value);
+  }
 
-      handleLogin(data.email, data.password);
-    }
+  function handleSubmit(e){
+    e.preventDefault()
+    const email = valueEmail;
+    const password = valuePassword;
+
+    handleLogin(email,password);
+  }
+
     
   
       return (
@@ -35,8 +32,8 @@ function Login({ handleLogin }) {
           <div>
               <form className="login__form" onSubmit={handleSubmit}>
                 <p className="login__header">Вход</p>
-                <input name="email" className="login__input" placeholder="Email" type="email" value={data.email} onChange={handleChange} required />
-                <input name="password" className="login__input" placeholder="Пароль" type="password" value={data.password} onChange={handleChange} required />
+                <input name="email" value={valueEmail} className="login__input" placeholder="Email" type="email" onChange={handleChangeEmail} required />
+                <input name="password" value={valuePassword} className="login__input" placeholder="Пароль" type="password"  onChange={handleChangePassword} required />
                   <span className="popup__error popup__error_is-active" id="image-src-error" />
                 <button type="submit" className="login__button">Войти</button>
               </form>
