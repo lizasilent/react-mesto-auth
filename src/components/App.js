@@ -108,8 +108,6 @@ function App() {
       }
 
 
-     
-
 
      // Закрытие попапов
      function closeAllPopups() {
@@ -206,7 +204,7 @@ function App() {
       <Route path="/sign-up">
         <Register handleRegister={handleRegister}/>
       </Route>
-      <Route path="/">
+      <Route path="/sign-in">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
           </Switch>

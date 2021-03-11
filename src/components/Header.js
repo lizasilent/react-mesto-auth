@@ -14,13 +14,15 @@ return (
             <div className="header__logo">
             <img alt='Logo' src={mainLogo}/>
             </div>
-        <div>
+        <div className="header__box">
         
         {loggedIn ? (
           <>
-            <p>email</p>
-            <p>залогинен</p>
-          </>) : (<Link to={linkRoute} className="header__login">{text}</Link> )
+            <p className="header__login">Email</p>
+            <p className="header__login">Выйти</p> 
+          </>) 
+          
+          : (<Link to={linkRoute} className="header__login">{text}</Link> )
         }
         </div>
     </header>
