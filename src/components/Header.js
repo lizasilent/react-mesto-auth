@@ -19,7 +19,7 @@ return (
         {loggedIn ? (
           <>
             <p className="header__login">Email</p>
-            <p className="header__login">Выйти</p> 
+            <p className="header__logout">Выйти</p> 
           </>) 
           
           : (<Link to={linkRoute} className="header__login">{text}</Link> )

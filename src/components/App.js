@@ -15,7 +15,6 @@ import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from "./ProtectedRoute";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-
 function App() {
 
   //Открытие попапов 
@@ -50,12 +49,10 @@ function App() {
       auth.getContent(data)
         .then((res) => {
           console.log(res)
+          history.push('/');
         }).catch(err => console.log(err));
         setLoggedIn(true);
 
-        // api.getUserInfo().then((user) => setCurrentUser(user.data))
-        // .catch(error => console.log(error));
-        
     }).catch((err) => {
       console.log(err)
     })
@@ -106,7 +103,6 @@ function App() {
       function handleCardClick(card) {
         setSelectedCard(card);
       }
-
 
 
      // Закрытие попапов
@@ -198,22 +194,19 @@ function App() {
                     onCardDelete={handleCardDelete}
                      />}
 
-<Route path="/sign-in">
+    <Route path="/sign-in">
         <Login handleLogin={handleLogin} />
       </Route>
       <Route path="/sign-up">
         <Register handleRegister={handleRegister}/>
       </Route>
-      <Route path="/sign-in">
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-          </Route>
           </Switch>
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
               <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
               <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
- 
+              <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups}/>
           </div>
         </div>
 

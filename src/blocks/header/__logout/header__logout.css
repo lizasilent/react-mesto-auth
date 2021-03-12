@@ -1,0 +1,14 @@
+.header__logout {
+    color: gray;
+   text-decoration: none;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 18px;
+   line-height: 22px;
+   text-align: right;
+   margin-right: 5px;
+}
+
+.header__logout:hover {
+    cursor: pointer;
+ };
