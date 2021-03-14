@@ -3,7 +3,7 @@ import mainLogo from "../images/mesto_logo.svg"
 import { Link, useLocation  } from 'react-router-dom';
 
 
-function Header({loggedIn}) {
+function Header({loggedIn, email}) {
 
     const { pathname } = useLocation();
     const text = `${pathname === '/sign-in' ? 'Регистрация' : 'Войти'}`;
@@ -18,7 +18,7 @@ return (
         
         {loggedIn ? (
           <>
-            <p className="header__login">Email</p>
+            <p className="header__login">{email}</p>
             <p className="header__logout">Выйти</p> 
           </>) 
           

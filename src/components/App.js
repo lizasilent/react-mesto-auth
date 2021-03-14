@@ -12,8 +12,11 @@ import api from "../utils/api";
 import Register from "./Register";
 import Login from "./Login";
 import InfoTooltip from './InfoTooltip';
+import Page404 from "./Page404";
 import ProtectedRoute from "./ProtectedRoute";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import sucessLogoPath from "../images/sucesspopup.png";
+import failLogoPath from "../images/failpopup.png";
 
 function App() {
 
@@ -25,14 +28,21 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const history = useHistory();
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
-  
+  const [message, setMessage] = React.useState({ iconPath: '', text: '' });
+  const [email, setEmail] = React.useState('');
+
+
+  const handleInfoTooltipContent = ({iconPath, text}) => {
+    setMessage({ iconPath: iconPath, text: text })
+  }
   
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth.getContent(jwt)
-        .then(() => {
+        .then((res) => {
           setLoggedIn(true);
+          setEmail(res.data.email);
           history.push('/');
         })
         .catch(err => console.log(err));
@@ -48,33 +58,36 @@ function App() {
       }
       auth.getContent(data)
         .then((res) => {
-          console.log(res)
-          history.push('/');
+          setEmail(res.data.email);
+          setLoggedIn(true);
+        history.push('/');
+        console.log(loggedIn);
         }).catch(err => console.log(err));
-        setLoggedIn(true);
-
     }).catch((err) => {
       console.log(err)
-    })
-  }
-    
+    }) }
    
     const handleRegister = (email, password) => {
       auth.register(email, password)
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
           setIsRegisterPopupOpen(true);
-          history.push("/sign-in");
-          console.log(email, password);
+          handleInfoTooltipContent({iconPath: sucessLogoPath, text: "Вы успешно зарегистрировались!"});
+          setTimeout(history.push, 3000, "/sign-in");
+          setTimeout(closeAllPopups, 2500);
       }
 
       if (res.status === 400) {
         console.log("Такой email уже существует")
       }
       
-    }).catch((err) => console.log(err))
-    }
-
+    }).catch((err) => {
+    setIsRegisterPopupOpen(true)
+    handleInfoTooltipContent({iconPath: failLogoPath, text: "Что-то пошло не так! Попробуйте ещё раз."});
+    setTimeout(closeAllPopups, 2500);
+    console.log("Ошибка регистрации: " + err);
+    })}
+  
 
   // Стейт, отвечающий за данные текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({ name: 'Gudetama', about: "lazylazy", avatar: "https://i.pinimg.com/originals/37/04/ef/3704efd795fcee0461946434db3c92c2.jpg" });
@@ -182,7 +195,7 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
           <div className="page__content">
-              <Header loggedIn={loggedIn}/>
+              <Header loggedIn={loggedIn} email={email}/>
               <Switch>
               {<ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
                     onEditProfile={handleEditProfileClick} 
@@ -200,13 +213,16 @@ function App() {
       <Route path="/sign-up">
         <Register handleRegister={handleRegister}/>
       </Route>
+      <Route path="/*">
+        <Page404 />
+      </Route>
           </Switch>
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
               <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
               <PopupWithForm name="type_submit" title="Вы уверены?" buttonTitle="Да"/>
-              <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups}/>
+              <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups} message={message} />
           </div>
         </div>
 
