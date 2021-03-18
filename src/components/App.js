@@ -52,20 +52,13 @@ function App() {
 
     const handleLogin = (email, password) => {
       auth.authorize(email, password)
-    .then((data) => {
-      if (!data) {
-        throw new Error('Произошла ошибка');
-      }
-      auth.getContent(data)
-        .then((res) => {
-          setEmail(res.data.email);
+      .then(() => {
+          setEmail(email);
           setLoggedIn(true);
         history.push('/');
-        console.log(loggedIn);
-        }).catch(err => console.log(err));
-    }).catch((err) => {
-      console.log(err)
-    }) }
+        })
+        .catch((err) => console.log(err));
+    }
    
     const handleRegister = (email, password) => {
       auth.register(email, password)

@@ -7,7 +7,13 @@ export const register = (email, password) => {
           "Content-Type": "application/json" 
       },
       body: JSON.stringify({email, password}),
-    })};
+    }).then(res => {
+      if (res.ok) {
+          return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })};
 
 
   export const authorize = (email, password) => {
@@ -17,13 +23,13 @@ export const register = (email, password) => {
       },
       body: JSON.stringify({ email, password })
     })
-    .then((res) => {
-      if (res.status === 400) {
-        throw new Error('Не все поля заполнены');
-      } else if (res.status === 401) {
-        throw new Error('Email не зарегистрирован');
-      } else return res.json();
-    })
+    .then(res => {
+      if (res.ok) {
+          return res.json();
+      }
+
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
     .then((data) => {
       console.log(data)
       if (data.token) {
@@ -41,7 +47,13 @@ export const getContent = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then((res) => res.json())
+  .then(res => {
+    if (res.ok) {
+        return res.json();
+    }
+
+    return Promise.reject(`Ошибка: ${res.status}`);
+})
   .then((data) => data)
 }
 
