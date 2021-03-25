@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, Route, Switch, Redirect } from "react-router-dom";
+import { useHistory, Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
